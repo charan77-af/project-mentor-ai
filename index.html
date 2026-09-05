@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Mentor AI — Final-Year Capstone Idea & Roadmap Architect</title>
+  <meta name="description" content="Intelligent project mentoring tool powered by Google Gemini 2.0 Flash for final-year engineering and CS students to discover, refine, and architect industry-ready capstone ideas with roadmaps and tech stacks.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="navbar" role="banner">
+    <div class="nav-container">
+      <a href="#home" class="brand-logo" aria-label="Project Mentor AI Home">
+        <div class="logo-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v8"/>
+            <path d="m4.93 10.93 1.41 1.41"/>
+            <path d="M2 18h2"/>
+            <path d="M20 18h2"/>
+            <path d="m19.07 10.93-1.41 1.41"/>
+            <path d="M22 22H2"/>
+            <path d="m8 22 4-10 4 10"/>
+          </svg>
+        </div>
+        <span>Project Mentor <span class="gradient-text">AI</span></span>
+        <span class="logo-badge">Gemini 2.0 Flash</span>
+      </a>
+
+      <!-- API Key Connection Status Pill -->
+      <div class="api-status-pill" id="api-status-pill" title="Gemini API Status">
+        <span class="status-indicator-dot" id="status-indicator-dot"></span>
+        <span id="api-status-text">Checking Gemini...</span>
+      </div>
+
+      <!-- Mobile Navigation Hamburger -->
+      <button class="mobile-menu-btn" id="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      </button>
+
+      <!-- Desktop Navigation Links -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links" id="nav-links">
+          <li class="nav-item">
+            <a href="#home" id="nav-home" class="active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>Generator</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#ideas" id="nav-ideas">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>Project Ideas</span>
+              <span class="count-badge" id="ideas-nav-badge" style="display:none;">3</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#deep-dive" id="nav-deepdive">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+              <span>Deep-Dive</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#history" id="nav-history">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+              <span>History</span>
+              <span class="count-badge" id="history-nav-count">0</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content View Area -->
+  <main class="main-content" id="app-viewport" role="main">
+
+    <!-- ====================================================================
+         PAGE 1: HOME / INPUT FORM PAGE
+         ==================================================================== -->
+    <section id="page-home" class="page-view active" aria-labelledby="home-heading">
+      <div class="section-header">
+        <span class="section-tag">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Powered by Gemini 2.0 Flash
+        </span>
+        <h1 class="section-title" id="home-heading">
+          Shape Your Final-Year Capstone with <span class="gradient-text">Project Mentor AI</span>
+        </h1>
+        <p class="section-subtitle">
+          Input your passion, technical skills, and preferred engineering domain. Gemini 2.0 Flash synthesizes 3 tailored, industry-grade project proposals with comprehensive technical architectures and roadmaps.
+        </p>
+      </div>
+
+      <!-- Friendly Error / Notice Banner if API key missing or error occurs -->
+      <div id="form-error-banner" class="alert-banner alert-banner-error" style="display: none;" role="alert">
+        <div class="alert-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="alert-content">
+          <strong id="form-error-title">API Notice</strong>
+          <p id="form-error-desc">Error details</p>
+        </div>
+        <button type="button" class="alert-close" id="form-error-close" aria-label="Close alert">&times;</button>
+      </div>
+
+      <div class="mentor-form-wrapper">
+        <!-- Interactive Form -->
+        <div class="form-card">
+          <form id="mentor-input-form" novalidate>
+            
+            <!-- 1. Preferred Domain (Dropdown) -->
+            <div class="form-group">
+              <label for="domain-select" class="form-label">
+                <span>Preferred Domain <span style="color: var(--accent-rose)">*</span></span>
+                <span class="form-hint">Choose your focus track</span>
+              </label>
+              <select id="domain-select" name="domain" class="form-control" required aria-required="true">
+                <option value="" disabled selected>Select a Domain</option>
+                <option value="Web Dev">Web Development (Full-Stack & Cloud)</option>
+                <option value="AI/ML">Artificial Intelligence & Machine Learning</option>
+                <option value="Mobile">Mobile Application Development (Android/iOS)</option>
+                <option value="IoT">Internet of Things (IoT) & Embedded Systems</option>
+                <option value="Cybersecurity">Cybersecurity & Ethical Hacking</option>
+                <option value="Other">Other / Interdisciplinary Engineering</option>
+              </select>
+              <span id="domain-error" class="error-message" role="alert"></span>
+            </div>
+
+            <!-- Optional Custom Domain input if "Other" is selected -->
+            <div class="form-group" id="other-domain-group" style="display: none;">
+              <label for="other-domain-input" class="form-label">
+                <span>Custom Domain Name <span style="color: var(--accent-rose)">*</span></span>
+                <span class="form-hint">e.g., Robotics, Blockchain, Cloud DevOps</span>
+              </label>
+              <input type="text" id="other-domain-input" name="otherDomain" class="form-control" placeholder="Specify your domain (e.g. Distributed Systems, Bio-Informatics)">
+              <span id="otherDomain-error" class="error-message" role="alert"></span>
+            </div>
+
+            <!-- 2. Technical Interests (Text / Textarea) -->
+            <div class="form-group">
+              <label for="interests-input" class="form-label">
+                <span>Interests & Problem Areas <span style="color: var(--accent-rose)">*</span></span>
+                <span class="form-hint">Real-world topics that excite you</span>
+              </label>
+              <textarea 
+                id="interests-input" 
+                name="interests" 
+                class="form-control" 
+                rows="3" 
+                placeholder="e.g. Remote healthcare diagnostics, fake news verification, smart agriculture, green energy monitoring, automated code reviews..." 
+                required 
+                aria-required="true"></textarea>
+              <span id="interests-error" class="error-message" role="alert"></span>
+            </div>
+
+            <!-- 3. Current Skills (Text) -->
+            <div class="form-group">
+              <label for="skills-input" class="form-label">
+                <span>Current Skills & Technologies <span style="color: var(--accent-rose)">*</span></span>
+                <span class="form-hint">Languages, frameworks, tools you know</span>
+              </label>
+              <input 
+                type="text" 
+                id="skills-input" 
+                name="skills" 
+                class="form-control" 
+                placeholder="e.g. Python, React, PostgreSQL, Docker, PyTorch, Flutter" 
+                required 
+                aria-required="true">
+              <span id="skills-error" class="error-message" role="alert"></span>
+
+              <!-- Quick Skill Chips -->
+              <div class="quick-tags-container">
+                <span class="quick-tags-label">Quick Add:</span>
+                <button type="button" class="skill-chip" data-skill="Python">Python</button>
+                <button type="button" class="skill-chip" data-skill="React">React</button>
+                <button type="button" class="skill-chip" data-skill="Node.js">Node.js</button>
+                <button type="button" class="skill-chip" data-skill="PyTorch">PyTorch</button>
+                <button type="button" class="skill-chip" data-skill="Flutter">Flutter</button>
+                <button type="button" class="skill-chip" data-skill="Docker">Docker</button>
+                <button type="button" class="skill-chip" data-skill="PostgreSQL">PostgreSQL</button>
+                <button type="button" class="skill-chip" data-skill="FastAPI">FastAPI</button>
+                <button type="button" class="skill-chip" data-skill="ESP32">ESP32</button>
+              </div>
+            </div>
+
+            <!-- Submit Action -->
+            <div style="margin-top: 2rem;">
+              <button type="submit" id="generate-btn" class="btn btn-primary btn-block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>Generate 3 Project Ideas</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Info / Value Proposition Aside -->
+        <aside class="form-info-panel" aria-label="Mentor Features Overview">
+          <div class="info-feature-box">
+            <div class="info-icon-wrapper" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="info-text">
+              <h4>Real-Time Gemini 2.0 Flash</h4>
+              <p>Directly queries Google's state-of-the-art Gemini 2.0 Flash model via <code>GEMINI_API_KEY</code> for truly tailored project synthesis.</p>
+            </div>
+          </div>
+
+          <div class="info-feature-box">
+            <div class="info-icon-wrapper" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="info-text">
+              <h4>On-Demand Deep-Dive Blueprints</h4>
+              <p>When you click "Explore this idea", Gemini constructs features, tech stack, and a numbered step-by-step roadmap tailored specifically to your chosen idea.</p>
+            </div>
+          </div>
+
+          <div class="info-feature-box">
+            <div class="info-icon-wrapper" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div class="info-text">
+              <h4>Viva & Defense Preparation</h4>
+              <p>Each deep-dive includes anticipated viva defense questions, edge cases, and future scope recommendations to impress evaluation panels.</p>
+            </div>
+          </div>
+
+          <div class="info-feature-box">
+            <div class="info-icon-wrapper" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            </div>
+            <div class="info-text">
+              <h4>Persistent Session Storage</h4>
+              <p>All generated proposals are auto-saved to local browser storage, allowing you to compare ideas and revisit past brainstorming sessions.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 2: IDEAS DISPLAY PAGE
+         ==================================================================== -->
+    <section id="page-ideas" class="page-view" aria-labelledby="ideas-heading">
+      <div class="section-header">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="section-tag">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+              Gemini 2.0 Flash Proposals
+            </span>
+            <h2 class="section-title" id="ideas-heading">Generated Project Ideas</h2>
+            <p class="section-subtitle">
+              Review your 3 tailored proposals. Click <strong>"Explore this idea"</strong> to have Gemini 2.0 Flash generate a complete architectural deep-dive and roadmap.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <button type="button" id="regenerate-ideas-btn" class="btn btn-secondary btn-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+              <span>Regenerate Ideas</span>
+            </button>
+            <a href="#home" class="btn btn-secondary btn-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <span>Edit Inputs</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Session Context Bar -->
+      <div class="context-banner" id="ideas-context-banner">
+        <div class="context-meta">
+          <span class="context-tag">Domain: <strong id="context-domain">-</strong></span>
+          <span class="context-tag">Skills: <strong id="context-skills">-</strong></span>
+          <span class="context-tag">Interests: <strong id="context-interests">-</strong></span>
+        </div>
+        <span style="font-size: 0.8rem; color: var(--text-muted);" id="context-timestamp">-</span>
+      </div>
+
+      <!-- 3 Idea Cards Grid -->
+      <div class="ideas-grid" id="ideas-cards-container">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 3: DEEP-DIVE PAGE
+         ==================================================================== -->
+    <section id="page-deepdive" class="page-view" aria-labelledby="deepdive-heading">
+      
+      <!-- Top Navigation & Action Controls -->
+      <div class="deepdive-nav-bar">
+        <button type="button" id="back-to-ideas-btn" class="btn btn-secondary btn-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          <span>Back to Ideas List</span>
+        </button>
+
+        <div style="display: flex; gap: 0.5rem;" id="deepdive-actions">
+          <button type="button" id="print-brief-btn" class="btn btn-secondary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            <span>Print / Save PDF</span>
+          </button>
+          <button type="button" id="copy-summary-btn" class="btn btn-secondary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy Brief</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading State for Gemini 2.0 Flash Deep-Dive Generation -->
+      <div id="deepdive-loading" class="deepdive-loading-card" style="display: none;">
+        <div class="spinner-large"></div>
+        <h3>Consulting Gemini 2.0 Flash...</h3>
+        <p>Architecting detailed features, recommended tech stack, numbered roadmap, and defense strategies for this capstone project.</p>
+      </div>
+
+      <!-- Error State for Deep-Dive Generation -->
+      <div id="deepdive-error" class="alert-banner alert-banner-error" style="display: none; margin-bottom: 2rem;">
+        <div class="alert-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="alert-content">
+          <strong id="deepdive-error-title">Deep-Dive Generation Error</strong>
+          <p id="deepdive-error-desc">Failed to generate blueprint.</p>
+          <div style="margin-top: 0.75rem;">
+            <button type="button" id="deepdive-retry-btn" class="btn btn-primary btn-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+              <span>Retry with Gemini</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Container (Shown when loaded) -->
+      <div id="deepdive-content">
+        <!-- Project Idea Banner Header -->
+        <div class="deepdive-header">
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <span class="idea-badge idea-1" id="deepdive-badge">Idea Blueprint</span>
+            <span class="difficulty-pill" id="deepdive-difficulty">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Advanced
+            </span>
+            <span class="difficulty-pill" id="deepdive-timeline">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              12-16 Weeks
+            </span>
+          </div>
+          <h2 class="deepdive-title" id="deepdive-heading">Project Blueprint Title</h2>
+          <p class="deepdive-pitch-full" id="deepdive-pitch">Detailed project pitch and rationale.</p>
+
+          <div class="deepdive-meta-chips" id="deepdive-meta-chips">
+            <!-- Dynamic meta tags -->
+          </div>
+        </div>
+
+        <!-- Deep Dive 4 Core Sections Container -->
+        <div class="deepdive-grid-sections">
+
+          <!-- SECTION 1: Features (List) -->
+          <div class="deepdive-section-card" id="deepdive-section-features">
+            <h3 class="section-head-title">
+              <span class="section-head-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              1. Key Features & Capabilities
+            </h3>
+            <ul class="feature-list" id="deepdive-features-list">
+              <!-- Dynamically rendered -->
+            </ul>
+          </div>
+
+          <!-- SECTION 2: Recommended Tech Stack -->
+          <div class="deepdive-section-card" id="deepdive-section-tech">
+            <h3 class="section-head-title">
+              <span class="section-head-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+              </span>
+              2. Recommended Tech Stack
+            </h3>
+
+            <div class="techstack-grid">
+              <div class="tech-layer-card">
+                <div class="tech-layer-name">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                  Frontend & UI
+                </div>
+                <div class="tech-layer-value" id="tech-frontend">-</div>
+              </div>
+
+              <div class="tech-layer-card">
+                <div class="tech-layer-name">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                  Backend & Services
+                </div>
+                <div class="tech-layer-value" id="tech-backend">-</div>
+              </div>
+
+              <div class="tech-layer-card">
+                <div class="tech-layer-name">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                  Database & Caching
+                </div>
+                <div class="tech-layer-value" id="tech-database">-</div>
+              </div>
+
+              <div class="tech-layer-card">
+                <div class="tech-layer-name">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+                  Specialized AI, Protocols & Tools
+                </div>
+                <div class="tech-layer-value" id="tech-specialized">-</div>
+              </div>
+            </div>
+
+            <!-- Skills alignment -->
+            <div class="tech-skills-alignment">
+              <h4>Student Skills Integrated:</h4>
+              <div class="skills-badge-list" id="tech-matched-skills">
+                <!-- Rendered dynamically -->
+              </div>
+              <h4 style="margin-top: 0.5rem; color: #93c5fd;">Recommended New Learnings:</h4>
+              <div class="skills-badge-list" id="tech-learning-ops">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION 3: Step-by-Step Development Roadmap (Numbered) -->
+          <div class="deepdive-section-card" id="deepdive-section-roadmap">
+            <h3 class="section-head-title">
+              <span class="section-head-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+              </span>
+              3. Step-by-Step Development Roadmap (Numbered)
+            </h3>
+
+            <div class="roadmap-timeline" id="deepdive-timeline-container">
+              <!-- Dynamically rendered numbered steps -->
+            </div>
+          </div>
+
+          <!-- SECTION 4: Suggested Improvements & Viva Defense Prep -->
+          <div class="deepdive-section-card" id="deepdive-section-improvements">
+            <h3 class="section-head-title">
+              <span class="section-head-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              </span>
+              4. Suggested Improvements & Viva Defense Angles
+            </h3>
+
+            <div class="improvements-grid">
+              <!-- Suggested Improvements -->
+              <div class="improvement-card">
+                <h4 class="improvement-title">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+                  Suggested Improvements & Scalability
+                </h4>
+                <ul class="feature-list" id="deepdive-future-scope">
+                  <!-- Dynamically rendered -->
+                </ul>
+              </div>
+
+              <!-- Viva Defense Angles -->
+              <div class="improvement-card">
+                <h4 class="improvement-title">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  Viva Defense Talking Points
+                </h4>
+                <ul class="feature-list" id="deepdive-viva-points">
+                  <!-- Dynamically rendered -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 4: HISTORY PAGE
+         ==================================================================== -->
+    <section id="page-history" class="page-view" aria-labelledby="history-heading">
+      <div class="section-header">
+        <div class="history-controls">
+          <div>
+            <span class="section-tag">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+              Persistent Browser Storage
+            </span>
+            <h2 class="section-title" id="history-heading">Session History</h2>
+            <p class="section-subtitle">
+              Revisit, compare, and reopen previously generated Gemini 2.0 Flash project idea batches.
+            </p>
+          </div>
+          <button type="button" id="clear-history-btn" class="btn btn-danger btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            <span>Clear All History</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- History Sessions Container -->
+      <div id="history-container">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="footer-content">
+      <p><strong>Project Mentor AI</strong> — Powered by Google Gemini 2.0 Flash for Final-Year Students.</p>
+      <p>Uses <code>GEMINI_API_KEY</code> environment variable • Real-time AI Architecture &amp; Roadmaps.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
